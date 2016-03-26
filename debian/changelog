@@ -1,0 +1,6 @@
+vyos-replace (1.0) UNRELEASED; urgency=medium
+
+  * Created the metapackage
+
+ -- Kim Hagen <kim.sidney@gmail.com>  Sat, 26 Mar 2016 14:28:24 -0400
+
