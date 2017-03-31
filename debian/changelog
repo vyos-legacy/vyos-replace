@@ -1,6 +1,6 @@
-vyos-replace (1.0) UNRELEASED; urgency=medium
+vyos-replace (1.0ubuntu1) UNRELEASED; urgency=medium
 
   * Created the metapackage
+  * Added snmpd replacement file
 
- -- Kim Hagen <kim.sidney@gmail.com>  Sat, 26 Mar 2016 14:28:24 -0400
-
+ -- Kim Hagen <kim@kim-G53SW>  Fri, 31 Mar 2017 11:43:07 +0200

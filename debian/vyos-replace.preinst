@@ -1,1 +1,2 @@
 dpkg-divert --package vyos-replace --add --rename /sbin/dhclient-script
+dpkg-divert --package vyos-replace --add --rename /etc/default/snmpd
