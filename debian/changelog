@@ -1,6 +1,7 @@
-vyos-replace (1.0ubuntu1) UNRELEASED; urgency=medium
+vyos-replace (1.02+vyos2+current1) UNRELEASED; urgency=medium
 
   * Created the metapackage
   * Added snmpd replacement file
+  * remove conffiles
 
- -- Kim Hagen <kim@kim-G53SW>  Fri, 31 Mar 2017 11:43:07 +0200
+ -- Kim Hagen <kim@kim-G53SW>  Fri, 31 Mar 2017 15:56:32 +0200
