@@ -154,12 +154,20 @@ update_routers() {
     for router in $new_routers; do
 	# point to point
 	if [ "$new_subnet_mask" == "255.255.255.255" ]; then
-	    vtysh -c "conf t" -c "ip route $router $interface $ZEBRA_ROUTE_DHCP"
+            if vtysh -c exit; then
+	        vtysh -c "conf t" -c "ip route $router $interface $ZEBRA_ROUTE_DHCP"
+            else
+                ip -4 route add ${router} dev $interface >/dev/null 2>&1
+            fi
 	fi
 
 	# Note: this should really be $router and $interface but zebra does
 	# not have way to specify this (yet).
-	vtysh -c "conf t" -c "ip route 0.0.0.0/0 $router $ZEBRA_ROUTE_DHCP"
+        if vtysh -c exit; then
+	    vtysh -c "conf t" -c "ip route 0.0.0.0/0 $router $ZEBRA_ROUTE_DHCP"
+        else
+            ip -4 route add default via ${router} dev $interface >/dev/null 2>&1
+        fi
     done
 }
 
