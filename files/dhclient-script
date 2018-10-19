@@ -234,6 +234,11 @@ case "$reason" in
 	make_resolv_conf
 	set_address
 	update_routers
+	
+        # If FRR is not running make sure dhclient daemon does not keep running.
+        if ! vtysh -c exit; then
+            killall dhclient
+        fi
 
         exit_with_hooks 0
         ;;
