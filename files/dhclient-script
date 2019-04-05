@@ -240,6 +240,8 @@ case "$reason" in
             killall dhclient
         fi
 
+        ip -4 route add default via ${router} dev ${interface}
+
         exit_with_hooks 0
         ;;
 
