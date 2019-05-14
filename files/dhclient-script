@@ -126,10 +126,6 @@ set_address() {
 	    broadcast $new_broadcast_address dev $interface
     fi
 
-    if [ -n "$new_interface_mtu" ] &&
-       [ ! "$old_interface_mtu" = "$new_interface_mtu" ]; then
-        ip link set $interface mtu $new_interface_mtu
-    fi
 }
 
 # Administrative for DHCP routes. Should be configurable
@@ -175,23 +171,6 @@ if [ -n "$new_subnet_mask" ]; then
 fi
 if [ -n "$old_subnet_mask" ]; then
     old_prefix=$(get_prefix $old_ip_address $old_subnet_mask)
-fi
-if [ -n "$new_interface_mtu" ]; then
-    # Vyatta configuration overrides response from server to allow user
-    # to work around broken ISP's
-    mtu_path=$(/opt/vyatta/sbin/vyatta-interfaces.pl --dev=$interface --path)
-    if [ -r $mtu_path ]; then
-	read new_interface_mtu < $mtu_path
-    fi
-
-    # The 576 MTU is only used for X.25 and dialup connections
-    # where the admin wants low latency.  Such a low MTU can cause
-    # problems with UDP traffic, among other things.  As such,
-    # disallow MTUs from 576 and below by default, so that broken
-    # MTUs are ignored, but higher stuff is allowed (1492, 1500, etc).
-    if [ $new_interface_mtu -le 576 ]; then
-	new_interface_mtu=
-    fi
 fi
 
 # The action starts here
