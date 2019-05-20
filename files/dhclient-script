@@ -18,7 +18,12 @@ ip=/sbin/ip
 make_resolv_conf() {
     local new_resolv_conf="/etc/resolv.conf.dhclient-new-$interface"
     local old_resolv_conf="/etc/resolv.conf.dhclient-old-$interface"
-    mv -f $new_resolv_conf $old_resolv_conf
+    if [ -f "new_resolv_conf" ]; then
+        mv -f $new_resolv_conf $old_resolv_conf
+    else
+        touch $new_resolv_conf
+        touch $old_resolv_conf
+    fi
     if [ -n "$new_domain_name" -o -n "$new_domain_name_servers" ]; then
         if [ -n "$new_domain_name" ]; then
             echo search $new_domain_name >>$new_resolv_conf
@@ -153,7 +158,7 @@ update_routers() {
     for router in $new_routers; do
 	# point to point
 	if [ "$new_subnet_mask" == "255.255.255.255" ]; then
-            if vtysh -c exit; then
+            if vtysh -c exit &>/dev/null; then
 	        vtysh -c "conf t" -c "ip route $router $interface $ZEBRA_ROUTE_DHCP" >/dev/null 2>&1
             else
                 ip -4 route add ${router} dev $interface >/dev/null 2>&1
@@ -162,7 +167,7 @@ update_routers() {
 
 	# Note: this should really be $router and $interface but zebra does
 	# not have way to specify this (yet).
-        if vtysh -c exit; then
+        if vtysh -c exit &>/dev/null; then
 	    vtysh -c "conf t" -c "ip route 0.0.0.0/0 $router $ZEBRA_ROUTE_DHCP" >/dev/null 2>&1
         else
             ip -4 route add default via ${router} dev $interface >/dev/null 2>&1
@@ -205,6 +210,7 @@ run_hookdir /etc/dhcp/dhclient-enter-hooks.d
 ip -4 route del default >/dev/null 2>&1
 
 # Execute the operation
+
 case "$reason" in
     MEDIUM)
         # Do nothing
@@ -236,8 +242,10 @@ case "$reason" in
 	update_routers
 	
         # If FRR is not running make sure dhclient daemon does not keep running.
-        if ! vtysh -c exit; then
+        if ! vtysh -c exit &>/dev/null; then
             killall dhclient
+        else
+            kill $(ps aux | grep dhclient | grep -v .conf | grep -v grep |awk '{print $2}')
         fi
 
         exit_with_hooks 0
