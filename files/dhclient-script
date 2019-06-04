@@ -44,10 +44,10 @@ make_resolv_conf() {
         echo " " > $new_resolv_conf
     fi
 
-    /opt/vyatta/sbin/vyatta_update_resolv.pl --dhclient-script 1
+    /usr/libexec/vyos/conf_mode/host_name.py --dhclient
     if ! diff -q $old_resolv_conf $new_resolv_conf >&/dev/null; then
        if [ -d /opt/vyatta/config/active/service/dns/forwarding ]; then
-          /opt/vyatta/sbin/vyatta-dns-forwarding.pl --update-dnsforwarding --outside-cli >&/dev/null
+          /usr/libexec/vyos/conf_mode/dns_forwarding.py --dhclient
        fi
     fi
     rm -f $old_resolv_conf
@@ -184,7 +184,7 @@ fi
 if [ -n "$new_interface_mtu" ]; then
     # Vyatta configuration overrides response from server to allow user
     # to work around broken ISP's
-    mtu_path=$(/opt/vyatta/sbin/vyatta-interfaces.pl --dev=$interface --path)
+    mtu_path=$(/opt/vyatta/sbin/vyatta-interfaces.pl --dev=$interface)
     if [ -r $mtu_path ]; then
 	read new_interface_mtu < $mtu_path
     fi
