@@ -144,7 +144,7 @@ update_routers() {
 
 	for router in $old_routers; do
 	    if [ "$old_subnet_mask" == "255.255.255.255" ]; then
-		vtysh -c "conf t" -c "no ip route $router $interface $ZEBRA_ROUTE_DHCP" >/dev/null 2>&1
+		vtysh -c "conf t" -c "no ip route $router/32 $interface $ZEBRA_ROUTE_DHCP" >/dev/null 2>&1
 	    fi
 	    vtysh -c "conf t" -c "no ip route 0.0.0.0/0 $router $ZEBRA_ROUTE_DHCP" >/dev/null 2>&1
 	done
@@ -154,9 +154,9 @@ update_routers() {
 	# point to point
 	if [ "$new_subnet_mask" == "255.255.255.255" ]; then
             if vtysh -c exit; then
-	        vtysh -c "conf t" -c "ip route $router $interface $ZEBRA_ROUTE_DHCP" >/dev/null 2>&1
+	        vtysh -c "conf t" -c "ip route $router/32 $interface $ZEBRA_ROUTE_DHCP" >/dev/null 2>&1
             else
-                ip -4 route add ${router} dev $interface >/dev/null 2>&1
+                ip -4 route add ${router}/32 dev $interface >/dev/null 2>&1
             fi
 	fi
 
