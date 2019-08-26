@@ -42,7 +42,7 @@ make_resolv_conf() {
         /usr/bin/vyos-hostsd-client --add-name-servers $NEW_SERVERS --tag dhcp-$interface
     fi
 
-    if [ -d /opt/vyatta/config/active/service/dns/forwarding ]; then
+    if cli-shell-api existsEffective service dns forwarding; then
        /usr/libexec/vyos/conf_mode/dns_forwarding.py --dhclient
     fi
 }
