@@ -7,6 +7,6 @@ Standards-Version: 3.9.1
 
 Package: vyos-replace
 Architecture: all
-Depends: isc-dhcp-client, snmpd
+Depends: isc-dhcp-client
 Description: VyOS metapackage
  Replaces everything required for VyOS to work

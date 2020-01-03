@@ -1,7 +1,11 @@
-vyos-replace (1.02+vyos2+current1) UNRELEASED; urgency=medium
+vyos-replace (1.02+vyos2+current1+nmu1) UNRELEASED; urgency=medium
 
+  [ Kim Hagen ]
   * Created the metapackage
   * Added snmpd replacement file
   * remove conffiles
 
- -- Kim Hagen <kim@kim-G53SW>  Fri, 31 Mar 2017 15:56:32 +0200
+  [ Christian Poessinger ]
+  * snmpd replacement file no longer required
+
+ -- Christian Poessinger <christian@poessinger.com>  Fri, 03 Jan 2020 16:21:17 +0100
