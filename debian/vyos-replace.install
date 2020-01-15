@@ -1,1 +1,2 @@
 files/dhclient-script sbin
+files/keepalived.service lib/systemd/system
