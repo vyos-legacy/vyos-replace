@@ -1,2 +1,3 @@
 files/dhclient-script sbin
 files/snmpd etc/default
+files/keepalived.service lib/systemd/system
